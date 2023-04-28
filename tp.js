@@ -17,9 +17,7 @@
 // 如果你用了其他第三方的网站可以在复制第五行，然后粘贴在下面继续添加自己的网站 @match https://chat.openai.com/*
 
 (() => {
-    // 这里可以替换成自己的模板,格式为 [{"act": "", "prompt": ""}]
-    const templateURL =
-      "https://raw.githubusercontent.com/Mainstayz/ChatGPT-Chat-records/main/favorite.json";
+    const templateURL = "https://raw.githubusercontent.com/Mainstayz/ChatGPT-Chat-records/main/favorite.json";
 
     const button = document.createElement("div");
     button.classList.add("chatgpt-prompt-helper-button");
@@ -33,35 +31,25 @@
 
     const segmentFilter = document.createElement("div");
     segmentFilter.classList.add("chatgpt-prompt-helper-segment-filter");
-    const segmentData = [
-      "favorite",
-    ];
+    const segmentData = ["favorite"];
     for (let i = 0; i < segmentData.length; i++) {
-      const segmentItem = document.createElement("div");
-      segmentItem.classList.add("chatgpt-prompt-helper-segment-filter-item");
-      segmentItem.textContent = segmentData[i];
-      segmentFilter.appendChild(segmentItem);
-      segmentItem.addEventListener("click", () => {
-        loadTemplates(
-          `https://raw.githubusercontent.com/Mainstayz/ChatGPT-Chat-records/main/${segmentData[i]}.json`
-        );
-        const segmentItems = document.getElementsByClassName(
-          "chatgpt-prompt-helper-segment-filter-item"
-        );
-        for (const item of segmentItems) {
-          item.classList.remove(
-            "chatgpt-prompt-helper-segment-filter-item-active"
-          );
+        const segmentItem = document.createElement("div");
+        segmentItem.classList.add("chatgpt-prompt-helper-segment-filter-item");
+        segmentItem.textContent = segmentData[i];
+        segmentFilter.appendChild(segmentItem);
+        segmentItem.addEventListener("click", () => {
+            loadTemplates(
+                `https://raw.githubusercontent.com/Mainstayz/ChatGPT-Chat-records/main/${segmentData[i]}.json`
+            );
+            const segmentItems = document.getElementsByClassName("chatgpt-prompt-helper-segment-filter-item");
+            for (const item of segmentItems) {
+                item.classList.remove("chatgpt-prompt-helper-segment-filter-item-active");
+            }
+            segmentItem.classList.add("chatgpt-prompt-helper-segment-filter-item-active");
+        });
+        if (i == 0) {
+            segmentItem.classList.add("chatgpt-prompt-helper-segment-filter-item-active");
         }
-        segmentItem.classList.add(
-          "chatgpt-prompt-helper-segment-filter-item-active"
-        );
-      });
-      if (i == 0) {
-        segmentItem.classList.add(
-          "chatgpt-prompt-helper-segment-filter-item-active"
-        );
-      }
     }
 
     list.appendChild(segmentFilter);
@@ -79,108 +67,105 @@
     let buttonStartY;
 
     const createListItem = (title, subtitle, content) => {
-      const listItem = document.createElement("div");
-      listItem.classList.add("chatgpt-prompt-helper-list-item");
+        const listItem = document.createElement("div");
+        listItem.classList.add("chatgpt-prompt-helper-list-item");
 
-      const itemTitle = document.createElement("div");
-      itemTitle.classList.add("chatgpt-prompt-helper-list-item-title");
-      itemTitle.textContent = title;
-      listItem.appendChild(itemTitle);
+        const itemTitle = document.createElement("div");
+        itemTitle.classList.add("chatgpt-prompt-helper-list-item-title");
+        itemTitle.textContent = title;
+        listItem.appendChild(itemTitle);
 
-      if (subtitle) {
-        const itemSubtitle = document.createElement("div");
-        itemSubtitle.classList.add("chatgpt-prompt-helper-list-item-subtitle");
-        itemSubtitle.textContent = subtitle;
-        itemSubtitle.addEventListener("click", () => {
-          toggleElement(itemContent);
-        });
-        listItem.appendChild(itemSubtitle);
-      }
-
-      const itemContent = document.createElement("div");
-      itemContent.classList.add("chatgpt-prompt-helper-list-item-content");
-      itemContent.style.display = "none";
-      itemContent.textContent = content;
-      listItem.appendChild(itemContent);
-
-      itemTitle.addEventListener("click", () => {
-        toggleElement(itemContent);
-      });
-
-      itemContent.addEventListener("click", () => {
-        const copyiedTag =
-          '<div class="chatgpt-prompt-helper-copyied">已复制</div>';
-        itemTitle.innerHTML = `${title} ${copyiedTag}`;
-        setTimeout(() => {
-          itemTitle.textContent = title;
-        }, 2000);
-
-        const textareas = document.querySelectorAll("textarea");
-        let maxWidth = 0;
-        let widestTextarea = null;
-        textareas.forEach(function (textarea) {
-          const width = textarea.offsetWidth;
-          if (width > maxWidth) {
-            maxWidth = width;
-            widestTextarea = textarea;
-          }
-        });
-        if (widestTextarea) {
-          const event = new Event("input", { bubbles: true });
-          widestTextarea.dispatchEvent(event);
-          widestTextarea.value = content;
+        if (subtitle) {
+            const itemSubtitle = document.createElement("div");
+            itemSubtitle.classList.add("chatgpt-prompt-helper-list-item-subtitle");
+            itemSubtitle.textContent = subtitle;
+            itemSubtitle.addEventListener("click", () => {
+                toggleElement(itemContent);
+            });
+            listItem.appendChild(itemSubtitle);
         }
-        navigator.clipboard.writeText(content);
-      });
 
-      return listItem;
+        const itemContent = document.createElement("div");
+        itemContent.classList.add("chatgpt-prompt-helper-list-item-content");
+        itemContent.style.display = "none";
+        itemContent.textContent = content;
+        listItem.appendChild(itemContent);
+
+        itemTitle.addEventListener("click", () => {
+            toggleElement(itemContent);
+        });
+
+        itemContent.addEventListener("click", () => {
+            const copyiedTag = '<div class="chatgpt-prompt-helper-copyied">已复制</div>';
+            itemTitle.innerHTML = `${title} ${copyiedTag}`;
+            setTimeout(() => {
+                itemTitle.textContent = title;
+            }, 2000);
+
+            const textareas = document.querySelectorAll("textarea");
+            let maxWidth = 0;
+            let widestTextarea = null;
+            textareas.forEach(function (textarea) {
+                const width = textarea.offsetWidth;
+                if (width > maxWidth) {
+                    maxWidth = width;
+                    widestTextarea = textarea;
+                }
+            });
+            if (widestTextarea) {
+                const event = new Event("input", { bubbles: true });
+                widestTextarea.dispatchEvent(event);
+                widestTextarea.value = content;
+            }
+            navigator.clipboard.writeText(content);
+        });
+
+        return listItem;
     };
 
     function toggleElement(element) {
-      element.style.display = element.style.display === "none" ? "block" : "none";
+        element.style.display = element.style.display === "none" ? "block" : "none";
     }
 
     function updateListPosition() {
-      list.style.top = `${button.offsetTop - list.offsetHeight}px`;
-      list.style.left = `${
-        button.offsetLeft + button.offsetWidth / 2 - list.offsetWidth
-      }px`;
+        list.style.top = `${button.offsetTop - list.offsetHeight}px`;
+        list.style.left = `${button.offsetLeft + button.offsetWidth / 2 - list.offsetWidth}px`;
     }
 
     button.addEventListener("click", () => {
-      if (isMoving) {
-        return;
-      }
-      listVisible = !listVisible;
-      toggleElement(list);
-      updateListPosition();
+        if (isMoving) {
+            return;
+        }
+        listVisible = !listVisible;
+        toggleElement(list);
+        updateListPosition();
     });
 
     button.addEventListener("mousedown", (event) => {
-      isDragging = true;
-      isMoving = false;
-      dragStartX = event.clientX;
-      dragStartY = event.clientY;
-      buttonStartX = button.offsetLeft;
-      buttonStartY = button.offsetTop;
-      updateListPosition();
+        isDragging = true;
+        isMoving = false;
+        dragStartX = event.clientX;
+        dragStartY = event.clientY;
+        buttonStartX = button.offsetLeft;
+        buttonStartY = button.offsetTop;
+        updateListPosition();
     });
 
     document.addEventListener("mousemove", (event) => {
-      if (isDragging) {
-        const offsetX = event.clientX - dragStartX;
-        const offsetY = event.clientY - dragStartY;
-        const newButtonX = buttonStartX + offsetX;
-        const newButtonY = buttonStartY + offsetY;
-        button.style.left = `${newButtonX}px`;
-        button.style.top = `${newButtonY}px`;
-        isMoving = offsetX > 5 || offsetY > 5;
-        updateListPosition();
-      }
+        if (isDragging) {
+            const offsetX = event.clientX - dragStartX;
+            const offsetY = event.clientY - dragStartY;
+            const newButtonX = buttonStartX + offsetX;
+            const newButtonY = buttonStartY + offsetY;
+            button.style.left = `${newButtonX}px`;
+            button.style.top = `${newButtonY}px`;
+            isMoving = offsetX > 5 || offsetY > 5;
+            updateListPosition();
+        }
     });
 
     document.addEventListener("mouseup", () => {
-      isDragging = false;
+        isDragging = false;
     });
 
     /**
@@ -300,72 +285,83 @@
     `;
 
     if (typeof GM_addStyle != "undefined") {
-      GM_addStyle(style);
+        GM_addStyle(style);
     } else if (typeof PRO_addStyle != "undefined") {
-      PRO_addStyle(style);
+        PRO_addStyle(style);
     } else if (typeof addStyle != "undefined") {
-      addStyle(style);
+        addStyle(style);
     } else {
-      var node = document.createElement("style");
-      node.type = "text/css";
-      node.appendChild(document.createTextNode(style));
-      var heads = document.getElementsByTagName("head");
-      if (heads.length > 0) {
-        heads[0].appendChild(node);
-      } else {
-        document.documentElement.appendChild(node);
-      }
+        var node = document.createElement("style");
+        node.type = "text/css";
+        node.appendChild(document.createTextNode(style));
+        var heads = document.getElementsByTagName("head");
+        if (heads.length > 0) {
+            heads[0].appendChild(node);
+        } else {
+            document.documentElement.appendChild(node);
+        }
     }
 
     /**
      *  Fetch
      */
 
-    async function fetchWithCache(url, cacheKey, cacheTime) {
-      cacheKey = cacheKey || url;
-      if (window.localStorage) {
-        let cachedData = localStorage.getItem(cacheKey);
-        const cachedTime = localStorage.getItem(cacheKey + "_expires");
-        if (cachedTime && Date.now() > cachedTime) {
-          localStorage.removeItem(cacheKey);
-          localStorage.removeItem(cacheKey + "_expires");
-          cachedData = null;
-        }
-        if (cachedData) {
-          return Promise.resolve(JSON.parse(cachedData));
-        }
-      }
+    async function fetchWithCache(url, cacheKey = url, cacheTime) {
+        const getFromLocalStorage = () => {
+            const cachedData = localStorage.getItem(cacheKey);
+            const cachedTime = localStorage.getItem(cacheKey + "_expires");
 
-      return fetch(url)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          if (window.localStorage) {
-            localStorage.setItem(cacheKey, JSON.stringify(data));
-            if (cacheTime) {
-              localStorage.setItem(cacheKey + "_expires", Date.now() + cacheTime);
+            if (cachedTime && Date.now() > cachedTime) {
+                localStorage.removeItem(cacheKey);
+                localStorage.removeItem(cacheKey + "_expires");
+                return null;
             }
-          }
-          return data;
-        });
+            return cachedData ? JSON.parse(cachedData) : null;
+        };
+
+        const saveToLocalStorage = (data, cacheTime) => {
+            localStorage.setItem(cacheKey, JSON.stringify(data));
+
+            if (cacheTime) {
+                localStorage.setItem(cacheKey + "_expires", Date.now() + cacheTime);
+            }
+        };
+
+        const fetchData = async () => {
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+
+            const data = await response.json();
+            saveToLocalStorage(data, cacheTime);
+            return data;
+        };
+
+        if (window.localStorage) {
+            const cachedData = getFromLocalStorage();
+
+            if (cachedData) {
+                return cachedData;
+            }
+        }
+
+        return fetchData();
     }
 
     function loadTemplates(url) {
-      fetchWithCache(url, null, 60 * 60 * 24).then((data) => {
-        // list remove all children except segment filter
-        while (list.children.length > 1) {
-          list.removeChild(list.lastChild);
-        }
-        data.forEach((item) => {
-          const listItem = createListItem(item.title, item.mark, item.prompt);
-          list.appendChild(listItem);
+        fetchWithCache(url, null, 60 * 60 * 24).then((data) => {
+            // list remove all children except segment filter
+            while (list.children.length > 1) {
+                list.removeChild(list.lastChild);
+            }
+            data.forEach((item) => {
+                const listItem = createListItem(item.title, item.mark, item.prompt);
+                list.appendChild(listItem);
+            });
         });
-      });
     }
 
     loadTemplates(templateURL);
-  })();
+})();
