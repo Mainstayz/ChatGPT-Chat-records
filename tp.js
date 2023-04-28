@@ -361,7 +361,7 @@
           list.removeChild(list.lastChild);
         }
         data.forEach((item) => {
-          const listItem = createListItem(item.act, item.sub, item.prompt);
+          const listItem = createListItem(item.title, item.mark, item.prompt);
           list.appendChild(listItem);
         });
       });
